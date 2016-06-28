@@ -11,7 +11,7 @@ Range:
 
 Quantity: is intval between 1, 20
 
-# Inherit
+# Inheritance
 ProductId: value\Id 
 
 Products: is collection of entity\Product
@@ -44,6 +44,9 @@ ProductCreated:
   id: value\Id
   product: entity\Product
   quantity: value\Quantity
+
+# Creating a command with same signature as an event
+CreateUser: event\UserCreated
 
 # Creating an event with same signature as a command
 UserCreated: command\CreateUser
