@@ -2,12 +2,12 @@
 Integer: is intVal
 
 Name: 
-	first: value\Firstname 
-	last:  value\Lastname
-			
+  first: value\Firstname 
+  last:  value\Lastname
+
 Range:
-	min: value\Integer
-	max: value\Integer
+  min: value\Integer
+  max: value\Integer
 
 Quantity: is intval between 1, 20
 
@@ -18,33 +18,32 @@ Products: is collection of entity\Product
 
 # Entites
 User:
-	id: value\Id
-	name: value\Name
+  id: value\Id
+  name: value\Name
 
 Product:
-	id: value\Id
-	product_id: value\ProductId
-	quantity: value\Quantity
+  id: value\Id
+  product_id: value\ProductId
+  quantity: value\Quantity
 
 Cart:
-	id: value\Id
-	products: value\Products
+  id: value\Id
+  products: value\Products
 
 # Commands
 CreateUser:
-		id: value\Id
-		user: entity\User
+  id: value\Id
+  user: entity\User
 
 CreateProduct:
-		id: value\Id
-		product: entity\Product
+  id: value\Id
+  product: entity\Product
 
 # Events
-
 ProductCreated:
-		id: value\Id
-		product: entity\Product
-		quantity: value\Quantity
+  id: value\Id
+  product: entity\Product
+  quantity: value\Quantity
 
 # Creating an event with same signature as a command
 UserCreated: command\CreateUser
