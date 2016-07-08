@@ -1,0 +1,4 @@
+# ValueObjects
+value\Integer: is intVal
+ 
+value\Quantity: is intval between 1, 20

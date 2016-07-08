@@ -1,6 +1,6 @@
 # ValueObjects
 value\Integer: is intVal
-
+ 
 value\Name: 
   first: value\Firstname 
   last:  value\Lastname
