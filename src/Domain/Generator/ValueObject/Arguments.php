@@ -2,10 +2,10 @@
 
 use EventSourced\ValueObject\ValueObject\Type;
 
-class Schemas extends Type\AbstractCollection 
+class Arguments extends Type\AbstractCollection 
 {    
     public function collection_of()
     {
-        return Schema::class;
+        return Argument::class;
     }
 }

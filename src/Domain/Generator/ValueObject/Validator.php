@@ -2,16 +2,14 @@
 
 use EventSourced\ValueObject\ValueObject\Type;
 
-class Schema extends Type\AbstractComposite 
+class Validator extends Type\AbstractComposite 
 {   
     protected $name;
-    protected $type;
     protected $arguments;
     
-    public function __construct(Name $name, Type $type, Arguments $arguments) 
+    public function __construct(Name $name, Arguments $arguments) 
 	{
-        $this->name = $name;
-        $this->type = $type;
+        $this->latitude = $name;
         $this->arguments = $arguments;
     }
     
@@ -20,12 +18,7 @@ class Schema extends Type\AbstractComposite
         return $this->name;
     }
     
-    public function type()
-    {
-        return $this->type;
-    }
-    
-    public function arguments()
+    public function longitude()
     {
         return $this->arguments;
     }

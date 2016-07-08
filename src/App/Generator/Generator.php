@@ -2,9 +2,13 @@
 
 class Generator
 {
+    private $input;
+    private $output;
+    
     public function __construct(InputAdapter $input, OutputAdapter $output)
     {
-        
+        $this->input = $input;
+        $this->output = $output;
     }
     
     public function run()
