@@ -50,7 +50,6 @@ value\Coordinate: is floatVal and between -90,90
         //Compare the generated file with 
         $actual = $this->fake_file_system->fetch("./Coordinate.php");
         $expected = $this->load_generated_template();
-        
         $this->assertEquals($expected, $actual, "Generated VO does not match expected template");
     }
     
