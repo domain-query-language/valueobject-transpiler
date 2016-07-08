@@ -1,18 +1,18 @@
 <?php namespace Domain\Generator\ValueObject;
 
-use EventSourced\ValueObject\ValueObject\Type;
+use EventSourced\ValueObject\ValueObject\Type\AbstractComposite;
 
-class Schema extends Type\AbstractComposite 
+class Schema extends AbstractComposite 
 {   
     protected $name;
     protected $type;
-    protected $arguments;
+    protected $validators;
     
-    public function __construct(Name $name, Type $type, Arguments $arguments) 
+    public function __construct(Name $name, Type $type, Validators $validators) 
 	{
         $this->name = $name;
         $this->type = $type;
-        $this->arguments = $arguments;
+        $this->validators = $validators;
     }
     
     public function name()
@@ -25,8 +25,8 @@ class Schema extends Type\AbstractComposite
         return $this->type;
     }
     
-    public function arguments()
+    public function validators()
     {
-        return $this->arguments;
+        return $this->validators;
     }
 }

@@ -1,8 +1,8 @@
 <?php namespace Domain\Generator\ValueObject;
 
-use EventSourced\ValueObject\ValueObject\Type;
+use EventSourced\ValueObject\ValueObject\Type\AbstractCollection;
 
-class Validators extends Type\AbstractCollection 
+class Validators extends AbstractCollection 
 {    
     public function collection_of()
     {

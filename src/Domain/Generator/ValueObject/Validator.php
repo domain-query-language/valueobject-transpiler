@@ -1,15 +1,15 @@
 <?php namespace Domain\Generator\ValueObject;
 
-use EventSourced\ValueObject\ValueObject\Type;
+use EventSourced\ValueObject\ValueObject\Type\AbstractComposite;
 
-class Validator extends Type\AbstractComposite 
+class Validator extends AbstractComposite 
 {   
     protected $name;
     protected $arguments;
     
     public function __construct(Name $name, Arguments $arguments) 
 	{
-        $this->latitude = $name;
+        $this->name = $name;
         $this->arguments = $arguments;
     }
     
@@ -18,7 +18,7 @@ class Validator extends Type\AbstractComposite
         return $this->name;
     }
     
-    public function longitude()
+    public function arguments()
     {
         return $this->arguments;
     }

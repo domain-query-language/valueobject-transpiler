@@ -5,10 +5,23 @@ use App\Generator;
 class EndToEndTest extends \PHPUnit_Framework_TestCase
 {
     private $fake_file_system;
+    private $input_adapter;
+    private $output_adapter;
     
     public function setUp()
     {
         $this->fake_file_system = new EndToEndTest\FakeFileSystem();
+        $this->input_adapter = new EndToEndTest\FakeInputAdapter($this->fake_file_system);
+        
+        $reflector = new \EventSourced\ValueObject\Reflector\Reflector();
+        $serializer = new \EventSourced\ValueObject\Serializer\Serializer($reflector);
+        $templater = new \League\Plates\Engine("/Users/barryosullivan/Code/valueobject-transpiler/src/Adapter/TemplateOutputAdapter/templates");
+        $this->output_adapter = new \Adapter\TemplateOutputAdapter(
+            $serializer, 
+            $templater, 
+            $this->fake_file_system
+        );
+       
     }
     
     public function test_creating_a_template()
@@ -28,14 +41,14 @@ value\Coordinate: is floatVal and between -90,90
     
     private function run_generator()
     {
-        $command = new Generator($this->fake_file_system);
-        $command->dispatch();    
+        $command = new Generator\Generator($this->input_adapter, $this->output_adapter);
+        $command->run();    
     }
     
     private function ensure_file_exists()
     {
         //Compare the generated file with 
-        $actual = $this->fake_file_system->load("./Coordinate.php");
+        $actual = $this->fake_file_system->fetch("./Coordinate.php");
         $expected = $this->load_generated_template();
         
         $this->assertEquals($expected, $actual, "Generated VO does not match expected template");
@@ -44,7 +57,7 @@ value\Coordinate: is floatVal and between -90,90
     private function load_generated_template()
     {
         $test_path = explode("/", __FILE__);
-        pop($test_path);
+        array_pop($test_path);
         $path = implode("/", $test_path)."/EndToEndTest/GeneratedQuanityTemplate.php";
         return file_get_contents($path);
     }

@@ -14,12 +14,11 @@ class FakeFileSystem implements \App\Generator\FileSystem
 
     public function fetch($file_path)
     {
-        
+        return $this->fly_system->read($file_path);
     }
 
     public function store($filename, $data)
     {
-        
+        $this->fly_system->put($filename, $data);
     }
-
 }

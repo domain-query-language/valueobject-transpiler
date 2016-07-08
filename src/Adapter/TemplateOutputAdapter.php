@@ -20,7 +20,7 @@ class TemplateOutputAdapter implements \App\Generator\OutputAdapter
     
     public function store_schemas(ValueObject\Schemas $schemas)
     {
-        foreach ($schemas as $schema) {
+        foreach ($schemas->collection() as $schema) {
             $template = $this->generate_template($schema);
             $this->store_template($schema->name(), $template);
         }
@@ -34,6 +34,7 @@ class TemplateOutputAdapter implements \App\Generator\OutputAdapter
     
     private function store_template(ValueObject\Name $name, $template)
     {
-        $this->file_system->store("./".$name->value().".php", $template);
+        $path = "./".$name->value().".php";
+        $this->file_system->store($path, $template);
     }
 }
