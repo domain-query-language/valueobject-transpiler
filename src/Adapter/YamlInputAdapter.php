@@ -1,10 +1,10 @@
-<?php namespace Test\EndToEndTest;
+<?php namespace Adapter;
 
 use App\Generator\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 use Domain\Generator\ValueObject;
 
-class FakeInputAdapter implements \App\Generator\InputAdapter
+class YamlInputAdapter implements \App\Generator\InputAdapter
 {
     private $file_system;
     
@@ -36,36 +36,36 @@ class FakeInputAdapter implements \App\Generator\InputAdapter
     
     private function make_validator($validator_string)
     {
-        $parts = array_filter(explode(" ", $validator_string));
-        $is = array_shift($parts);
-        
-        //Turn into tree
-        $tree = [];
-        $node = [];
-        foreach ($parts as $part) {
-            if ($part == "and") {
-                $tree[] = $node;
-                $node = [];
-            } else {
-                $node[] = $part;
-            }
-        }
-        $tree[] = $node;
+        $conditon_asts = $this->parse_conditions($validator_string);
         
         $validators = [];
         
-        foreach ($tree as $validator_tree) {
-            $name_string = $validator_tree[0];
-            $arguments_string = isset($validator_tree[1]) ? $validator_tree[1]: null;
+        foreach ($conditon_asts as $conditon_ast) {
             $validators[] = new ValueObject\Validator(
-                new ValueObject\Name($name_string),
-                $this->make_arguments($arguments_string)
+                new ValueObject\Name($conditon_ast->validator_name),
+                $this->make_arguments($conditon_ast->validator_arguments)
             );
         }
         
         return new ValueObject\Validators($validators);
     }
     
+    private function parse_conditions($validator_string)
+    {
+        $conditions = explode("and", substr($validator_string, 3));   
+        //Turn into tree
+        $ast_tree = [];
+        foreach ($conditions as $condition_string) {
+            $condition = new \stdClass();
+            $parts = array_values(array_filter(explode(" ", $condition_string)));
+            $condition->validator_name = $parts[0];
+            $condition->validator_arguments = isset($parts[1]) ? $parts[1]: null;
+            $ast_tree[] = $condition;
+        }
+        
+        return $ast_tree;
+    }
+        
     private function make_arguments($arguments_string)
     {
         if (!$arguments_string) {

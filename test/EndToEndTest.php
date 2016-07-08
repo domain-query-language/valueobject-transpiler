@@ -11,7 +11,7 @@ class EndToEndTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->fake_file_system = new EndToEndTest\FakeFileSystem();
-        $this->input_adapter = new EndToEndTest\FakeInputAdapter($this->fake_file_system);
+        $this->input_adapter = new \Adapter\YamlInputAdapter($this->fake_file_system);
         
         $reflector = new \EventSourced\ValueObject\Reflector\Reflector();
         $serializer = new \EventSourced\ValueObject\Serializer\Serializer($reflector);
