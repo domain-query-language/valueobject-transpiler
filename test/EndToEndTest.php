@@ -23,7 +23,7 @@ class EndToEndTest extends \PHPUnit_Framework_TestCase
         $config = "
 value\Coordinate: is floatVal and between -90,90       
         ";
-        $this->fake_file_system->store("valueobjects.yml", $config);
+        $this->fake_file_system->store("./valueobjects.yml", $config);
     }
     
     private function run_generator()
@@ -35,7 +35,7 @@ value\Coordinate: is floatVal and between -90,90
     private function ensure_file_exists()
     {
         //Compare the generated file with 
-        $actual = $this->fake_file_system->load("Coordinate.php");
+        $actual = $this->fake_file_system->load("./Coordinate.php");
         $expected = $this->load_generated_template();
         
         $this->assertEquals($expected, $actual, "Generated VO does not match expected template");

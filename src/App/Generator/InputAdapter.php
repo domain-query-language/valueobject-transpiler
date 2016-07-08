@@ -1,6 +1,6 @@
 <?php namespace App\Generator;
 
-use Domain\Generator\Schemas;
+use Domain\Generator\ValueObject\Schemas;
 
 interface InputAdapter
 {
