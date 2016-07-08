@@ -4,7 +4,12 @@ class <?=$name?> extends AbstractSingleValue
 {    
     protected function validator()
     {
-        return parent::validator()->floatVal()->between(-67, 90);
+        <?php 
+        $validator_functions = '';
+        foreach ($validators as $validator) {
+            $validator_functions.= "->".$validator->name."(".implode(", ",$validator->arguments);
+        ?>
+        return parent::validator()<?=$validator_functions?>;
     }
 }
 
