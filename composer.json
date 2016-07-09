@@ -37,6 +37,7 @@
       "Adapter\\": "src/Adapter/",
       "App\\": "src/App/",
       "Domain\\": "src/Domain/",
+      "Controller\\": "src/Controller",
       "Test\\": "test/"
     }
   },

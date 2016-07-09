@@ -1,25 +1,27 @@
-<?php namespace Adapter;
+<?php namespace Controller;
 
 use App\Generator\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 use Domain\Generator\ValueObject;
+use App\Generator\Generator;
 
-class YamlInputAdapter implements \App\Generator\InputAdapter
+class YamlFileController
 {
     private $file_system;
-    private $input_file;
+    private $generator;
     
-    public function __construct(FileSystem $file_system, $input_file="./valueobjects.yml")
+    public function __construct(FileSystem $file_system, Generator $generator)
     {
         $this->file_system = $file_system;
-        $this->input_file = $input_file;
+        $this->generator = $generator;
     }
     
-    public function load_schemas()
+    public function generate($input_file)
     {
-        $schema_yaml = $this->file_system->fetch($this->input_file);
+        $schema_yaml = $this->file_system->fetch($input_file);
         $schema_trees = Yaml::parse($schema_yaml);
-        return $this->translate_trees_into_schemas($schema_trees);
+        $schemas = $this->translate_trees_into_schemas($schema_trees);
+        $this->generator->run($schemas);
     }
     
     private function translate_trees_into_schemas($trees)
@@ -29,14 +31,14 @@ class YamlInputAdapter implements \App\Generator\InputAdapter
             list($type_string, $name_string) = explode("\\", $key_string);
             $name = new ValueObject\Name($name_string);
             $type = new ValueObject\Type($type_string);
-            $validators = $this->make_validator($validator_string);
+            $validators = $this->make_validators($validator_string);
             $schemas[] = new ValueObject\Schema($name, $type, $validators);
         }
                 
         return new ValueObject\Schemas($schemas);
     }
-    
-    private function make_validator($validator_string)
+       
+    private function make_validators($validator_string)
     {
         $conditon_asts = $this->parse_conditions($validator_string);
         
@@ -51,7 +53,7 @@ class YamlInputAdapter implements \App\Generator\InputAdapter
         
         return new ValueObject\Validators($validators);
     }
-    
+        
     private function parse_conditions($validator_string)
     {
         $conditions = explode("and", substr($validator_string, 3));   

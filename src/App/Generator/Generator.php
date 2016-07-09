@@ -1,19 +1,18 @@
 <?php namespace App\Generator;
 
+use Domain\Generator\ValueObject\Schemas;
+
 class Generator
 {
-    private $input;
     private $output;
     
-    public function __construct(InputAdapter $input, OutputAdapter $output)
+    public function __construct(OutputAdapter $output)
     {
-        $this->input = $input;
         $this->output = $output;
     }
     
-    public function run()
-    {
-        $schemas = $this->input->load_schemas();        
+    public function run(Schemas $schemas)
+    {      
         $this->output->store_schemas($schemas);
     }
 }
