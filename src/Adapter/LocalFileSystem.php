@@ -1,15 +1,15 @@
 <?php namespace Adapter;
 
 use League\Flysystem\Filesystem;
-use League\Flysystem\Memory\MemoryAdapter;
+use League\Flysystem\Adapter\Local;
 
-class FakeFileSystem implements \App\Generator\FileSystem
+class LocalFileSystem implements \App\Generator\FileSystem
 {
     private $fly_system;
     
-    public function __construct()
+    public function __construct($root_dir)
     {
-        $this->fly_system = new Filesystem(new MemoryAdapter());
+        $this->fly_system = new Filesystem(new Local($root_dir));
     }
 
     public function fetch($file_path)

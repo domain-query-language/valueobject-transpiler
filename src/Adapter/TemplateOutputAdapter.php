@@ -34,7 +34,7 @@ class TemplateOutputAdapter implements \App\Generator\OutputAdapter
     
     private function store_template(ValueObject\Name $name, $template)
     {
-        $path = "./".$name->value().".php";
+        $path = $name->value().".php";
         $this->file_system->store($path, $template);
     }
 }

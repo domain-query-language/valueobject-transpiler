@@ -7,15 +7,17 @@ use Domain\Generator\ValueObject;
 class YamlInputAdapter implements \App\Generator\InputAdapter
 {
     private $file_system;
+    private $input_file;
     
-    public function __construct(FileSystem $file_system)
+    public function __construct(FileSystem $file_system, $input_file="./valueobjects.yml")
     {
         $this->file_system = $file_system;
+        $this->input_file = $input_file;
     }
     
     public function load_schemas()
     {
-        $schema_yaml = $this->file_system->fetch("./valueobjects.yml");
+        $schema_yaml = $this->file_system->fetch($this->input_file);
         $schema_trees = Yaml::parse($schema_yaml);
         return $this->translate_trees_into_schemas($schema_trees);
     }
