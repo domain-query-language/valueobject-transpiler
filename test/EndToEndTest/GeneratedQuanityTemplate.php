@@ -1,4 +1,6 @@
-<?php use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
+<?php namespace Test\Generated;
+
+use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
 
 class Coordinate extends AbstractSingleValue 
 {    

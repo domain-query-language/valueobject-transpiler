@@ -1,4 +1,6 @@
-<?="<?php"?> use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
+<?="<?php"?> namespace <?=$namespace;?>;
+
+use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
 
 class <?=$name?> extends AbstractSingleValue 
 {    

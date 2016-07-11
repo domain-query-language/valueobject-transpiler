@@ -10,12 +10,14 @@ class TemplateOutputAdapter implements \App\Generator\OutputAdapter
     private $file_system;
     private $serializer;
     private $templater;
+    private $output_namespace;
     
-    public function __construct(Serializer $serializer, Templator $templater, FileSystem $file_system)
+    public function __construct(Serializer $serializer, Templator $templater, FileSystem $file_system, $output_namespace)
     {
         $this->serializer = $serializer;
         $this->templater = $templater;
         $this->file_system = $file_system;
+        $this->output_namespace = $output_namespace;
     }
     
     public function store_schemas(ValueObject\Schemas $schemas)
@@ -29,6 +31,7 @@ class TemplateOutputAdapter implements \App\Generator\OutputAdapter
     private function generate_template(ValueObject\Schema $schema)
     {
         $schema_tree = $this->serializer->serialize($schema);
+        $schema_tree['namespace'] = $this->output_namespace;
         return $this->templater->render("value", $schema_tree);
     }
     
