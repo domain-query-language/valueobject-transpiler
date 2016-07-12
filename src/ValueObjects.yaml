@@ -1,0 +1,52 @@
+# ValueObjects
+Integer: is intVal
+
+Name: 
+  first: value\Firstname 
+  last:  value\Lastname
+
+Range:
+  min: value\Integer
+  max: value\Integer
+
+Quantity: is intval between 1, 20
+
+# Inheritance
+ProductId: value\Id 
+
+Products: is collection of entity\Product
+
+# Entites
+User:
+  id: value\Id
+  name: value\Name
+
+Product:
+  id: value\Id
+  product_id: value\ProductId
+  quantity: value\Quantity
+
+Cart:
+  id: value\Id
+  products: value\Products
+
+# Commands
+CreateUser:
+  id: value\Id
+  user: entity\User
+
+CreateProduct:
+  id: value\Id
+  product: entity\Product
+
+# Events
+ProductCreated:
+  id: value\Id
+  product: entity\Product
+  quantity: value\Quantity
+
+# Creating a command with same signature as an event
+CreateUser: event\UserCreated
+
+# Creating an event with same signature as a command
+UserCreated: command\CreateUser
