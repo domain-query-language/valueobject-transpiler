@@ -1,6 +1,6 @@
-<?php namespace Test;
+<?php namespace Test\Acceptance;
 
-class EndToEndTest extends \PHPUnit_Framework_TestCase
+class ValueObjectValidatorTest extends TestCase
 {
     private $fake_file_system;
     private $output_adapter;
@@ -16,7 +16,7 @@ class EndToEndTest extends \PHPUnit_Framework_TestCase
         
         $reflector = new \EventSourced\ValueObject\Reflector\Reflector();
         $serializer = new \EventSourced\ValueObject\Serializer\Serializer($reflector);
-        $templater = new \League\Plates\Engine("/Users/barryosullivan/Code/valueobject-transpiler/src/Adapter/TemplateOutputAdapter/templates");
+        $templater = new \League\Plates\Engine(ROOT_DIR."/src/Adapter/TemplateOutputAdapter/templates");
         $this->output_adapter = new \Adapter\PHPTemplateOutputAdapter(
             $serializer, 
             $templater,   
@@ -51,16 +51,14 @@ value\Coordinate: is floatVal and between -90,90
     private function ensure_file_exists()
     {
         //Compare the generated file with 
-        $actual = $this->fake_file_system->fetch("./Coordinate.php");
+        $actual = $this->fake_file_system->fetch("./test/generated/Coordinate.php");
         $expected = $this->load_generated_template();
         $this->assertEquals($expected, $actual, "Generated VO does not match expected template");
     }
     
     private function load_generated_template()
     {
-        $test_path = explode("/", __FILE__);
-        array_pop($test_path);
-        $path = implode("/", $test_path)."/EndToEndTest/GeneratedCoordinateTemplate.php";
+        $path = ROOT_DIR."/test/Acceptance/Expected/GeneratedCoordinate.php";
         return file_get_contents($path);
     }
 }

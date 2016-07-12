@@ -2,7 +2,7 @@
 
 use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
 
-class <?=$name?> extends AbstractSingleValue 
+class <?=$id['name']?> extends AbstractSingleValue 
 {    
     protected function validator()
     {

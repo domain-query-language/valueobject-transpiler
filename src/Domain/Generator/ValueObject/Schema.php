@@ -1,32 +1,14 @@
 <?php namespace Domain\Generator\ValueObject;
 
-use EventSourced\ValueObject\ValueObject\Type\AbstractComposite;
+use EventSourced\ValueObject\ValueObject\Type\AbstractTreeNode;
 
-class Schema extends AbstractComposite 
-{   
-    protected $name;
-    protected $type;
-    protected $validators;
-    
-    public function __construct(Name $name, Type $type, Validators $validators) 
-	{
-        $this->name = $name;
-        $this->type = $type;
-        $this->validators = $validators;
-    }
-    
-    public function name()
+class Schema extends AbstractTreeNode 
+{    
+    static protected function accepts()
     {
-        return $this->name;
-    }
-    
-    public function type()
-    {
-        return $this->type;
-    }
-    
-    public function validators()
-    {
-        return $this->validators;
+        return [
+            'composite' => Schema\Composite::class,
+            'value' => Schema\Value::class
+        ];
     }
 }

@@ -7,7 +7,6 @@ use Domain\Generator\ValueObject;
 class SchemaFactory
 {
     private $file_system;
-    private $output_adapter;
     
     public function __construct(FileSystem $file_system)
     {
@@ -25,15 +24,30 @@ class SchemaFactory
     private function translate_trees_into_schemas($trees)
     {
         $schemas = [];
-        foreach ($trees as $key_string=>$validator_string) {
-            list($type_string, $name_string) = explode("\\", $key_string);
-            $name = new ValueObject\Name($name_string);
-            $type = new ValueObject\Type($type_string);
-            $validators = $this->make_validators($validator_string);
-            $schemas[] = new ValueObject\Schema($name, $type, $validators);
+        foreach ($trees as $id_string=>$value) {
+            $id = $this->make_id($id_string);
+            
+            $schema = null;
+            if (is_string($value)) {
+                $validators = $this->make_validators($value);
+                $schema = new ValueObject\Schema\Value($id, $validators);
+            } else {
+                $properties = $this->make_properties($value);
+                $schema = new ValueObject\Schema\Composite($id, $properties);
+            }
+            
+            $schemas[] = new ValueObject\Schema($schema);
         }
                 
         return new ValueObject\Schemas($schemas);
+    }
+    
+    private function make_id($id_string)
+    {
+        list($type_string, $name_string) = explode("\\", $id_string);
+        $name = new ValueObject\Name($name_string);
+        $type = new ValueObject\Type($type_string);
+        return new ValueObject\ID($type, $name);
     }
        
     private function make_validators($validator_string)
@@ -79,5 +93,17 @@ class SchemaFactory
         }, $arg_parts);
         
         return new ValueObject\Arguments($args);
+    }
+    
+    private function make_properties($values)
+    {
+        $properties = [];
+        foreach ($values as $key=>$value) {
+            $properties[] = new ValueObject\Property(
+                new ValueObject\Name($key), 
+                $this->make_id($value)
+            );
+        }
+        return new ValueObject\Properties($properties);
     }
 }

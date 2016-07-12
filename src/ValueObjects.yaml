@@ -1,52 +1,55 @@
 # ValueObjects
-Integer: is intVal
+value\Integer: is intVal
 
-Name: 
+value\Name: 
   first: value\Firstname 
   last: value\Lastname
 
-Range:
+value\Range:
   min: value\Integer
   max: value\Integer
 
-Quantity: is intval between 1, 20
+value\Quantity: is intval and between 1, 20
 
 # Inheritance
-ProductId: value\Id 
+value\ProductId: value\Id 
 
-Products: is collection of entity\Product
+value\Products: contains entity\Product
 
 # Entites
-User:
+entity\User:
   id: value\Id
   name: value\Name
 
-Product:
+entity\Product:
   id: value\Id
   product_id: value\ProductId
   quantity: value\Quantity
 
-Cart:
+entity\Cart:
   id: value\Id
   products: value\Products
 
 # Commands
-CreateUser:
+command\CreateUser:
   id: value\Id
   user: entity\User
 
-CreateProduct:
+command\CreateProduct:
   id: value\Id
   product: entity\Product
 
 # Events
-ProductCreated:
+event\ProductCreated:
   id: value\Id
   product: entity\Product
   quantity: value\Quantity
 
 # Creating a command with same signature as an event
-CreateUser: event\UserCreated
+command\CreateUser: event\UserCreated
 
 # Creating an event with same signature as a command
-UserCreated: command\CreateUser
+event\UserCreated: command\CreateUser
+
+# Or collections, where it can be of a collection of types
+value\WebAddress: can be value\URL or value\IP or value\Null

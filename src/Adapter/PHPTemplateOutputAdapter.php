@@ -22,7 +22,7 @@ class PHPTemplateOutputAdapter implements \App\Generator\OutputAdapter
         foreach ($schemas->collection() as $schema) {
             $namespace = $this->convert_file_path_to_namespace($config_file_path);
             $template = $this->generate_template($schema, $namespace);
-            $this->store_template($schema->name(), $config_file_path, $template);
+            $this->store_template($schema->value()->id()->name(), $config_file_path, $template);
         }
     }
     
@@ -43,9 +43,9 @@ class PHPTemplateOutputAdapter implements \App\Generator\OutputAdapter
     
     private function generate_template(ValueObject\Schema $schema, $snamespace)
     {
-        $schema_tree = $this->serializer->serialize($schema);
+        $schema_tree = $this->serializer->serialize($schema->value());
         $schema_tree['namespace'] = $snamespace;
-        return $this->templater->render("value", $schema_tree);
+        return $this->templater->render($schema->get_type_key(), $schema_tree);
     }
     
     private function store_template(ValueObject\Name $name, $config_file_path, $template)
