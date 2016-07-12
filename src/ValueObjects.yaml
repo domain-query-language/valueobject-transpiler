@@ -3,7 +3,7 @@ Integer: is intVal
 
 Name: 
   first: value\Firstname 
-  last:  value\Lastname
+  last: value\Lastname
 
 Range:
   min: value\Integer
