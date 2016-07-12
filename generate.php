@@ -22,3 +22,5 @@ $controller = new \Controller\FileSystemScannerController($schema_factory, $outp
 
 $controller->generate('./');
 
+echo "Schemas generated succesfully.\n";
+

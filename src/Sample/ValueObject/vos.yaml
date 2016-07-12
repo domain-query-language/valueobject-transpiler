@@ -1,3 +1,6 @@
 # ValueObjects
 value\Integer: is intVal
 value\Quantity: is intval and between 1,20
+value\Range:
+  min: value\Quantity
+  max: value\Quantity
