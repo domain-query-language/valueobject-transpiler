@@ -1,33 +1,31 @@
 <?php namespace Test;
 
-use App\Generator;
-
 class EndToEndTest extends \PHPUnit_Framework_TestCase
 {
     private $fake_file_system;
-    private $input_controller;
     private $output_adapter;
-    private $generator;
-    private $config_file;
+    private $base_folder;
+    private $controller;
     
     public function setUp()
     {
-        $this->fake_file_system = new EndToEndTest\FakeFileSystem();
+        $this->fake_file_system = new \Adapter\FileSystem( 
+            new \League\Flysystem\Memory\MemoryAdapter() 
+        );
+        $this->base_folder = "./";
         
         $reflector = new \EventSourced\ValueObject\Reflector\Reflector();
         $serializer = new \EventSourced\ValueObject\Serializer\Serializer($reflector);
         $templater = new \League\Plates\Engine("/Users/barryosullivan/Code/valueobject-transpiler/src/Adapter/TemplateOutputAdapter/templates");
-        $this->output_adapter = new \Adapter\TemplateOutputAdapter(
+        $this->output_adapter = new \Adapter\PHPTemplateOutputAdapter(
             $serializer, 
-            $templater, 
-            $this->fake_file_system,
-            "Test\Generated"
+            $templater,   
+            $this->fake_file_system
         );
+         
+        $schema_factory = new \Controller\SchemaFactory($this->fake_file_system);
         
-        $this->config_file = "./valueobjects.yml";
-
-        $this->generator = new Generator\Generator($this->output_adapter);
-        $this->input_controller = new \Controller\YamlFileController($this->fake_file_system, $this->generator);
+        $this->controller = new \Controller\FileSystemScannerController($schema_factory, $this->output_adapter, $this->fake_file_system);
     }
     
     public function test_creating_a_template()
@@ -42,12 +40,12 @@ class EndToEndTest extends \PHPUnit_Framework_TestCase
         $config = "
 value\Coordinate: is floatVal and between -90,90       
         ";
-        $this->fake_file_system->store($this->config_file, $config);
+        $this->fake_file_system->store('test/generated/vos.yaml', $config);
     }
     
     private function run_generator()
     {
-        $this->input_controller->generate($this->config_file); 
+        $this->controller->generate($this->base_folder);
     }
     
     private function ensure_file_exists()
@@ -62,7 +60,7 @@ value\Coordinate: is floatVal and between -90,90
     {
         $test_path = explode("/", __FILE__);
         array_pop($test_path);
-        $path = implode("/", $test_path)."/EndToEndTest/GeneratedQuanityTemplate.php";
+        $path = implode("/", $test_path)."/EndToEndTest/GeneratedCoordinateTemplate.php";
         return file_get_contents($path);
     }
 }

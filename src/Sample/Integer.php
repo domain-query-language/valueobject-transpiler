@@ -1,4 +1,6 @@
-<?php use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
+<?php namespace ValueObject;
+
+use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
 
 class Integer extends AbstractSingleValue 
 {    

@@ -3,25 +3,23 @@
 use App\Generator\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 use Domain\Generator\ValueObject;
-use App\Generator\Generator;
 
-class YamlFileController
+class SchemaFactory
 {
     private $file_system;
-    private $generator;
+    private $output_adapter;
     
-    public function __construct(FileSystem $file_system, Generator $generator)
+    public function __construct(FileSystem $file_system)
     {
         $this->file_system = $file_system;
-        $this->generator = $generator;
     }
     
-    public function generate($input_file)
+    public function yaml_file($input_file)
     {
         $schema_yaml = $this->file_system->fetch($input_file);
         $schema_trees = Yaml::parse($schema_yaml);
         $schemas = $this->translate_trees_into_schemas($schema_trees);
-        $this->generator->run($schemas);
+        return $schemas;
     }
     
     private function translate_trees_into_schemas($trees)
