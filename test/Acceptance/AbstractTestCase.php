@@ -47,7 +47,13 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
         $this->controller->generate($this->base_folder);
     }
     
-    abstract protected function class_name();
+    protected function class_name()
+    {
+        $yaml = $this->yaml_config();
+        list ($name, $config) = explode(":", $yaml);
+        $name_parts = explode("\\", trim($name));
+        return array_pop($name_parts);
+    }
     
     private function ensure_file_exists()
     {

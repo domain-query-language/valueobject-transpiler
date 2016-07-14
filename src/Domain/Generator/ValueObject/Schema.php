@@ -7,8 +7,9 @@ class Schema extends AbstractTreeNode
     static protected function accepts()
     {
         return [
+            'value' => Schema\Value::class,
             'composite' => Schema\Composite::class,
-            'value' => Schema\Value::class
+            'collection' => Schema\Collection::class
         ];
     }
 }

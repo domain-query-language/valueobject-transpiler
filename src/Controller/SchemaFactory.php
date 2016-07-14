@@ -28,18 +28,38 @@ class SchemaFactory
             $id = $this->make_id($id_string);
             
             $schema = null;
-            if (is_string($value)) {
+            if ($this->is_value($value)) {
                 $validators = $this->make_validators($value);
                 $schema = new ValueObject\Schema\Value($id, $validators);
-            } else {
-                $properties = $this->make_properties($value);
+            }
+            if ($this->is_composite($value)) {
+               $properties = $this->make_properties($value);
                 $schema = new ValueObject\Schema\Composite($id, $properties);
+            }
+            if ($this->is_collection($value)) {
+                $collection = $this->make_collection($value);
+                $schema = new ValueObject\Schema\Collection($id, $collection);
             }
             
             $schemas[] = new ValueObject\Schema($schema);
         }
                 
         return new ValueObject\Schemas($schemas);
+    }
+    
+    private function is_value($value)
+    {
+        return is_string($value) && strpos(trim($value), "is ") === 0;
+    }
+    
+    private function is_collection($value)
+    {
+        return is_string($value) && strpos(trim($value), "contains ") === 0;
+    }
+    
+    private function is_composite($value)
+    {
+        return is_array($value);
     }
     
     private function make_id($id_string)
@@ -105,5 +125,11 @@ class SchemaFactory
             );
         }
         return new ValueObject\Properties($properties);
+    }
+    
+    private function make_collection($value)
+    {
+        $parts = explode(" ", $value);
+        return $this->make_id($parts[1]);
     }
 }

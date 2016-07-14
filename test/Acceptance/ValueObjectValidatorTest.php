@@ -2,11 +2,6 @@
 
 class ValueObjectValidatorTest extends AbstractTestCase
 {
-    protected function class_name()
-    {
-        return "Coordinate";
-    }
-
     protected function yaml_config()
     {
         return "
