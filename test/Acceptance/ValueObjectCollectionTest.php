@@ -1,6 +1,6 @@
 <?php namespace Test\Acceptance;
 
-class ValueObjectCompositeTest extends AbstractTestCase
+class ValueObjectCollectionTest extends AbstractTestCase
 {
     protected function yaml_config()
     {

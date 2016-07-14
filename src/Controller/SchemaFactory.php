@@ -32,11 +32,15 @@ class SchemaFactory
                 $validators = $this->make_validators($value);
                 $schema = new ValueObject\Schema\Value($id, $validators);
             }
-            if ($this->is_composite($value)) {
-               $properties = $this->make_properties($value);
+            else if ($this->is_entity($id)) {
+                $properties = $this->make_properties($value);
+                $schema = new ValueObject\Schema\Entity($id, $properties);
+            }
+            else if ($this->is_composite($value)) {
+                $properties = $this->make_properties($value);
                 $schema = new ValueObject\Schema\Composite($id, $properties);
             }
-            if ($this->is_collection($value)) {
+            else if ($this->is_collection($value)) {
                 $collection = $this->make_collection($value);
                 $schema = new ValueObject\Schema\Collection($id, $collection);
             }
@@ -50,6 +54,11 @@ class SchemaFactory
     private function is_value($value)
     {
         return is_string($value) && strpos(trim($value), "is ") === 0;
+    }
+    
+    private function is_entity(ValueObject\ID $id)
+    {
+        return $id->type()->value() == 'entity';
     }
     
     private function is_collection($value)
