@@ -43,6 +43,9 @@ class SchemaFactory
             else if ($this->is_collection($value)) {
                 $collection = $this->make_collection($value);
                 $schema = new ValueObject\Schema\Collection($id, $collection);
+            } else if ($this->is_tree_node($value)) {
+                $node_options = $this->make_node_options($value);
+                $schema = new ValueObject\Schema\TreeNode($id, $node_options);
             }
             
             $schemas[] = new ValueObject\Schema($schema);
@@ -69,6 +72,11 @@ class SchemaFactory
     private function is_composite($value)
     {
         return is_array($value);
+    }
+    
+    private function is_tree_node($value)
+    {
+        return is_string($value) && strpos(trim($value), "can be ") === 0;
     }
     
     private function make_id($id_string)
@@ -140,5 +148,17 @@ class SchemaFactory
     {
         $parts = explode(" ", $value);
         return $this->make_id($parts[1]);
+    }
+    
+    public function make_node_options($value)
+    {
+        $clean = str_replace("can be ", "", $value);
+        $id_strings = explode("or", $clean);
+        
+        $nodes = array_map(function($id_string) {
+            return $this->make_id(trim($id_string));
+        }, $id_strings);
+        
+        return new ValueObject\TreeNode($nodes);
     }
 }

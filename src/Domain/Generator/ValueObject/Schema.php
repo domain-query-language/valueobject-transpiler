@@ -10,7 +10,8 @@ class Schema extends AbstractTreeNode
             'value' => Schema\Value::class,
             'entity' => Schema\Entity::class,
             'composite' => Schema\Composite::class,
-            'collection' => Schema\Collection::class
+            'collection' => Schema\Collection::class,
+            'treenode' => Schema\TreeNode::class
         ];
     }
 }

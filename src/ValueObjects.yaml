@@ -51,5 +51,5 @@ command\CreateUser: event\UserCreated
 # Creating an event with same signature as a command
 event\UserCreated: command\CreateUser
 
-# Or collections, where it can be of a collection of types
+# 
 value\WebAddress: can be value\URL or value\IP or value\Null
