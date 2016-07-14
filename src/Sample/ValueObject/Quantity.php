@@ -1,4 +1,4 @@
-<?php namespace ValueObject;
+<?php namespace Sample\ValueObject;
 
 use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
 
