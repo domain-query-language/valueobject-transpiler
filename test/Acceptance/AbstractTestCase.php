@@ -60,6 +60,9 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     private function load_generated_template()
     {
         $path = ROOT_DIR."/test/Acceptance/Expected/Generated".$this->class_name().".php";
+        if (!is_file($path)) {
+            throw new \Exception("Expected a sample generated class for '".$this->class_name()."', found none. Please add the following file to continue. '$path'");
+        }
         return file_get_contents($path);
     }
 }
