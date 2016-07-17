@@ -36,6 +36,10 @@ class SchemaFactory
                 $properties = $this->make_properties($value);
                 $schema = new ValueObject\Schema\Entity($id, $properties);
             }
+            else if ($this->is_aggreggate_operation($id)) {
+                $properties = $this->make_properties($value);
+                $schema = new ValueObject\Schema\Event($id, $properties);
+            }
             else if ($this->is_composite($value)) {
                 $properties = $this->make_properties($value);
                 $schema = new ValueObject\Schema\Composite($id, $properties);
@@ -62,6 +66,11 @@ class SchemaFactory
     private function is_entity(ValueObject\ID $id)
     {
         return $id->type()->value() == 'entity';
+    }
+    
+    private function is_aggreggate_operation(ValueObject\ID $id)
+    {
+        return in_array($id->type()->value(), ['event', 'command']);
     }
     
     private function is_collection($value)

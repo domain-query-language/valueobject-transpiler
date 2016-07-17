@@ -6,6 +6,6 @@ class Type extends AbstractSingleValue
 {    
     protected function validator()
     {
-        return parent::validator()->in(['value', 'entity']);
+        return parent::validator()->in(['value', 'entity', 'event', 'command']);
     }
 }
