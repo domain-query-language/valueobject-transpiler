@@ -1,4 +1,4 @@
-<?php namespace Sample\ValueObject\SubFolder;
+<?php namespace ValueObject\SubFolder;
 
 use EventSourced\ValueObject\ValueObject\Type\AbstractSingleValue;
 
