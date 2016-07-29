@@ -6,7 +6,7 @@ class Name extends Type\AbstractSingleValue
 {    
     protected function validator()
     {
-        return parent::validator()->noWhitespace()->alnum()->notEmpty();
+        return parent::validator()->noWhitespace()->alnum("_.-")->notEmpty();
     }
 }
 
